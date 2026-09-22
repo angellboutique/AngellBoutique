@@ -426,6 +426,7 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 0;
+      overflow: hidden;
     }
 
     .bag-gallery-row img {
@@ -438,6 +439,8 @@
 
     .bag-card-info {
       padding: 22px 24px 24px;
+      position: relative;
+      z-index: 1;
     }
 
     .bag-card-info .bag-badge {
