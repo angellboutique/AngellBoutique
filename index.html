@@ -633,8 +633,8 @@
       .promo-gallery img { aspect-ratio: 1 / 1; }
 
       .product-grid { grid-template-columns: 1fr; gap: 20px; }
-      .bag-gallery-row { grid-template-columns: 1fr; max-height: 300px; }
-      .bag-gallery-row img { aspect-ratio: 4 / 3; }
+      .bag-gallery-row { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+      .bag-gallery-row img { flex: 0 0 80%; scroll-snap-align: start; aspect-ratio: 4 / 3; }
 
       .about-grid { grid-template-columns: 1fr; }
       .about-image { max-height: 320px; }
