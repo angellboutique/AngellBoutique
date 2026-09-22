@@ -1,0 +1,856 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angell Boutique</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --cream: #FDF8F4;
+      --cocoa: #3B2A24;
+      --cocoa-light: #6B5A54;
+      --dusty-rose: #C4898E;
+      --blush: #F0D9DD;
+      --linen: #EDE4DD;
+      --petal: #E8B4BC;
+      --surface: #FFFFFF;
+    }
+
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--cream);
+      color: var(--cocoa);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      font-weight: 400;
+    }
+
+    /* ─── Navbar ─── */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 72px;
+      background: rgba(253,248,244,0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(20px, 5vw, 48px);
+      border-bottom: 1px solid var(--linen);
+    }
+
+    .nav-logo { height: 44px; width: auto; }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--cocoa-light);
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      padding: 4px 0;
+      position: relative;
+      transition: color 0.25s;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1.5px;
+      background: var(--dusty-rose);
+      transition: width 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    .nav-links a:hover { color: var(--cocoa); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      color: var(--cocoa);
+    }
+
+    .nav-toggle svg { width: 22px; height: 22px; }
+
+    /* ─── Hero ─── */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: clamp(32px, 5vw, 80px);
+      padding: clamp(48px, 8vw, 100px) clamp(20px, 5vw, 48px);
+      max-width: 1200px;
+      margin: 0 auto;
+      min-height: 70vh;
+    }
+
+    .hero-text { max-width: 520px; }
+
+    .hero-eyebrow {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--dusty-rose);
+      margin-bottom: 16px;
+      font-weight: 400;
+    }
+
+    .hero-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--cocoa);
+      margin-bottom: 20px;
+    }
+
+    .hero-body {
+      font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+      color: var(--cocoa-light);
+      margin-bottom: 36px;
+      max-width: 400px;
+      line-height: 1.7;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 36px;
+      background: var(--cocoa);
+      color: var(--cream);
+      text-decoration: none;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 0.9rem;
+      border-radius: 60px;
+      transition: background 0.3s, transform 0.2s;
+      letter-spacing: 0.01em;
+    }
+
+    .hero-cta:hover {
+      background: var(--dusty-rose);
+      transform: translateY(-2px);
+    }
+
+    .hero-cta svg { width: 16px; height: 16px; }
+
+    .hero-image {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-image img {
+      width: 100%;
+      max-width: 440px;
+      height: auto;
+      border-radius: 200px 200px 24px 24px;
+      object-fit: cover;
+      aspect-ratio: 3 / 4;
+      background: var(--blush);
+    }
+
+    /* ─── Section shared ─── */
+    .section {
+      padding: clamp(48px, 8vw, 96px) clamp(20px, 5vw, 48px);
+    }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--dusty-rose);
+      margin-bottom: 8px;
+      font-weight: 400;
+    }
+
+    .section-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      font-weight: 700;
+      color: var(--cocoa);
+      letter-spacing: -0.02em;
+      margin-bottom: 48px;
+    }
+
+    /* ─── Promo Editorial ─── */
+    .promo-editorial {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: clamp(32px, 5vw, 72px);
+      align-items: center;
+    }
+
+    .promo-gallery {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .promo-gallery img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 16px;
+      aspect-ratio: 3 / 4;
+      background: var(--blush);
+    }
+
+    .promo-details {}
+
+    .promo-tag {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--dusty-rose);
+      margin-bottom: 12px;
+    }
+
+    .promo-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: var(--cocoa);
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .promo-desc {
+      font-size: 0.95rem;
+      color: var(--cocoa-light);
+      line-height: 1.75;
+      margin-bottom: 28px;
+      font-weight: 300;
+      max-width: 420px;
+    }
+
+    .promo-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .promo-price {
+      font-family: 'Fraunces', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--dusty-rose);
+    }
+
+    .promo-price-old {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--cocoa-light);
+      text-decoration: line-through;
+    }
+
+    .promo-features {
+      list-style: none;
+      margin-bottom: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .promo-features li {
+      font-size: 0.9rem;
+      color: var(--cocoa-light);
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .promo-features li::before {
+      content: '~';
+      position: absolute;
+      left: 0;
+      color: var(--dusty-rose);
+      font-family: 'Fraunces', serif;
+    }
+
+    .promo-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      background: var(--dusty-rose);
+      color: var(--cream);
+      text-decoration: none;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 0.9rem;
+      border-radius: 60px;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .promo-cta:hover {
+      background: var(--cocoa);
+      transform: translateY(-2px);
+    }
+
+    .promo-cta svg { width: 16px; height: 16px; }
+
+    /* ─── Products ─── */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      list-style: none;
+    }
+
+    .product-card {
+      background: var(--surface);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--linen);
+      transition: transform 0.35s cubic-bezier(0.25, 0.1, 0.25, 1), box-shadow 0.35s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px rgba(59,42,36,0.08);
+    }
+
+    .product-img-wrap {
+      overflow: hidden;
+      aspect-ratio: 1 / 1;
+      background: var(--blush);
+    }
+
+    .product-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    .product-card:hover .product-img { transform: scale(1.05); }
+
+    .product-info { padding: 20px 22px 24px; }
+
+    .product-name {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--cocoa);
+      margin-bottom: 4px;
+    }
+
+    .product-desc {
+      font-size: 0.85rem;
+      color: var(--cocoa-light);
+      margin-bottom: 18px;
+      line-height: 1.55;
+      font-weight: 300;
+    }
+
+    .product-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .product-price {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--cocoa);
+    }
+
+    .product-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      background: var(--cocoa);
+      color: var(--cream);
+      border: none;
+      border-radius: 60px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 0.8rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.25s, transform 0.2s;
+    }
+
+    .product-cta:hover {
+      background: var(--dusty-rose);
+      transform: scale(1.03);
+    }
+
+    /* ─── Bags section ─── */
+    .bag-card {
+      background: var(--surface);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--linen);
+      transition: transform 0.35s cubic-bezier(0.25, 0.1, 0.25, 1), box-shadow 0.35s;
+    }
+
+    .bag-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px rgba(59,42,36,0.08);
+    }
+
+    .bag-gallery-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+
+    .bag-gallery-row img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      aspect-ratio: 3 / 4;
+      display: block;
+    }
+
+    .bag-card-info {
+      padding: 22px 24px 24px;
+    }
+
+    .bag-card-info .bag-badge {
+      display: inline-block;
+      background: var(--dusty-rose);
+      color: var(--cream);
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 60px;
+      margin-bottom: 10px;
+      letter-spacing: 0.04em;
+    }
+
+    .bag-card-info .bag-name {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--cocoa);
+      margin-bottom: 4px;
+    }
+
+    .bag-card-info .bag-desc {
+      font-size: 0.85rem;
+      color: var(--cocoa-light);
+      line-height: 1.55;
+      font-weight: 300;
+      margin-bottom: 18px;
+    }
+
+    .bag-card-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* ─── About ─── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: clamp(32px, 5vw, 72px);
+      align-items: center;
+    }
+
+    .about-image {
+      border-radius: 24px;
+      overflow: hidden;
+      aspect-ratio: 4 / 5;
+      background: var(--blush);
+    }
+
+    .about-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .about-text p {
+      font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+      line-height: 1.8;
+      color: var(--cocoa-light);
+      margin-bottom: 16px;
+      font-weight: 300;
+    }
+
+    .about-tagline {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--dusty-rose);
+      margin-top: 24px;
+      display: block;
+    }
+
+    /* ─── Contact ─── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 560px;
+    }
+
+    .contact-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 20px 22px;
+      border: 1px solid var(--linen);
+      text-decoration: none;
+      color: var(--cocoa);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(59,42,36,0.06);
+    }
+
+    .contact-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-icon svg { width: 22px; height: 22px; }
+
+    .contact-icon.whatsapp { background: #E8F5E9; }
+    .contact-icon.instagram { background: var(--blush); }
+
+    .contact-label {
+      font-size: 0.75rem;
+      color: var(--cocoa-light);
+      font-weight: 400;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .contact-value {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    /* ─── Footer ─── */
+    .footer {
+      text-align: center;
+      padding: 32px 24px;
+      border-top: 1px solid var(--linen);
+      font-size: 0.8rem;
+      color: var(--cocoa-light);
+    }
+
+    .footer .heart { color: var(--dusty-rose); }
+
+    /* ─── Mobile ─── */
+    @media (max-width: 768px) {
+      .nav-links {
+        position: fixed;
+        top: 72px;
+        left: 0;
+        right: 0;
+        background: rgba(253,248,244,0.97);
+        backdrop-filter: blur(16px);
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--linen);
+        transform: translateY(-100%);
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.3s, opacity 0.3s;
+      }
+
+      .nav-links.open {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .nav-links a {
+        padding: 12px 24px;
+        width: 100%;
+        text-align: center;
+      }
+
+      .nav-links a::after { display: none; }
+
+      .nav-toggle { display: block; }
+
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        min-height: auto;
+        padding-top: 40px;
+      }
+
+      .hero-text { max-width: 100%; order: 2; }
+      .hero-body { max-width: 100%; margin-left: auto; margin-right: auto; }
+      .hero-image { order: 1; margin-bottom: 16px; }
+      .hero-image img { max-width: 260px; border-radius: 120px 120px 20px 20px; }
+
+      .promo-editorial { grid-template-columns: 1fr; }
+      .promo-gallery { grid-template-columns: 1fr 1fr; max-height: 320px; }
+
+      .product-grid { grid-template-columns: 1fr; gap: 20px; }
+      .bag-gallery-row { grid-template-columns: repeat(3, 1fr); max-height: 200px; }
+
+      .about-grid { grid-template-columns: 1fr; }
+      .about-image { max-height: 320px; }
+
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .product-grid { grid-template-columns: repeat(2, 1fr); }
+      .bag-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .product-card, .contact-card, .hero-cta, .product-cta, .bag-card { transition: none; }
+      .product-card:hover .product-img { transform: none; }
+      .nav-links a::after { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <img src="logo.png" alt="Angell Boutique" class="nav-logo">
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#productos">Productos</a></li>
+      <li><a href="#promociones">Promociones</a></li>
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" onclick="document.getElementById('navLinks').classList.toggle('open')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-text">
+      <p class="hero-eyebrow">hecho con amor</p>
+      <h1 class="hero-title">Regalos que se sienten</h1>
+      <p class="hero-body">Cada peluche esta hecho para abrazar. Elegimos suavidad, color y carino para que cada momento sea un poco mas especial.</p>
+      <a href="#productos" class="hero-cta">
+        Ver catalogo
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+    <div class="hero-image">
+      <img src="oso.png" alt="Peluche oso de Angell Boutique">
+    </div>
+  </header>
+
+  <section id="productos" class="section">
+    <div class="section-inner">
+      <p class="section-label">para regalar</p>
+      <h2 class="section-title">Nuestros peluches</h2>
+      <ul class="product-grid">
+        <li class="product-card">
+          <div class="product-img-wrap"><img src="oso.png" alt="Osito" class="product-img"></div>
+          <div class="product-info">
+            <h3 class="product-name">Winnie Pooh y Piglet</h3>
+            <p class="product-desc">El oso miel y su mejor amigo. Suaves, tiernos y perfectos para abrazar.</p>
+            <div class="product-bottom">
+              <span class="product-price">S/ 30</span>
+              <a href="https://wa.me/51930427807?text=Hola! Quiero Winnie Pooh y Piglet" class="product-cta" target="_blank" rel="noopener">Consultar</a>
+            </div>
+          </div>
+        </li>
+        <li class="product-card">
+          <div class="product-img-wrap"><img src="gatito.png" alt="Gatito" class="product-img"></div>
+          <div class="product-info">
+            <h3 class="product-name">Gatito Garfield</h3>
+            <p class="product-desc">El gato mas perezoso y divertido del mundo. Ahora en peluche para abrazar.</p>
+            <div class="product-bottom">
+              <span class="product-price">S/ 30</span>
+              <a href="https://wa.me/51930427807?text=Hola! Quiero el gatito Garfield" class="product-cta" target="_blank" rel="noopener">Consultar</a>
+            </div>
+          </div>
+        </li>
+        <li class="product-card">
+          <div class="product-img-wrap"><img src="cordero.png" alt="Cordero" class="product-img"></div>
+          <div class="product-info">
+            <h3 class="product-name">Cordero Abejita</h3>
+            <p class="product-desc">Un corderito con alas de abeja. Tierno, suave y lleno de carino.</p>
+            <div class="product-bottom">
+              <span class="product-price">S/ 28</span>
+              <a href="https://wa.me/51930427807?text=Hola! Quiero el cordero abejita" class="product-cta" target="_blank" rel="noopener">Consultar</a>
+            </div>
+          </div>
+        </li>
+        <li class="product-card">
+          <div class="product-img-wrap"><img src="abejita.png" alt="Abejita" class="product-img"></div>
+          <div class="product-info">
+            <h3 class="product-name">AbejitaFeliz</h3>
+            <p class="product-desc">Dulce como la miel, suave como una nube. Con flores incluidas.</p>
+            <div class="product-bottom">
+              <span class="product-price">S/ 50</span>
+              <a href="https://wa.me/51930427807?text=Hola! Quiero la abejita" class="product-cta" target="_blank" rel="noopener">Consultar</a>
+            </div>
+          </div>
+        </li>
+        <li class="product-card">
+          <div class="product-img-wrap"><img src="kitty.png" alt="Kitty" class="product-img"></div>
+          <div class="product-info">
+            <h3 class="product-name">Hello Kitty</h3>
+            <p class="product-desc">La gatita mas famosa del mundo, ahora en peluche. Suave y con moñito.</p>
+            <div class="product-bottom">
+              <span class="product-price">S/ 55</span>
+              <a href="https://wa.me/51930427807?text=Hola! Quiero la kitty" class="product-cta" target="_blank" rel="noopener">Consultar</a>
+            </div>
+          </div>
+        </li>
+        <li class="product-card">
+          <div class="product-img-wrap"><img src="snoopi.png.jpeg" alt="Snoopy" class="product-img"></div>
+          <div class="product-info">
+            <h3 class="product-name">Snoopy con flor</h3>
+            <p class="product-desc">El perro mas querido del mundo, con una flor en la cabeza. Puro carino.</p>
+            <div class="product-bottom">
+              <span class="product-price">S/ 52</span>
+              <a href="https://wa.me/51930427807?text=Hola! Quiero el snoopy" class="product-cta" target="_blank" rel="noopener">Consultar</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="promociones" class="section" style="background: var(--blush);">
+    <div class="section-inner">
+      <p class="section-label">ofertas</p>
+      <h2 class="section-title">Promociones</h2>
+      <div class="promo-editorial">
+        <div class="promo-gallery">
+          <img src="pijamapose1.png" alt="Pijama Angell Boutique">
+          <img src="pijamapose2.png" alt="Pijama Angell Boutique">
+          <img src="pijamapose3.png" alt="Pijama Angell Boutique">
+          <img src="pijamapose4.png" alt="Pijama Angell Boutique">
+        </div>
+        <div class="promo-details">
+          <p class="promo-tag">nueva coleccion</p>
+          <h3 class="promo-title">Pijamas de la casa</h3>
+          <p class="promo-desc">Dos modelos para elijas tu favorita. Super suaves, perfectas para noches de movie y chocolate caliente.</p>
+          <div class="promo-price-row">
+            <span class="promo-price">S/ 59</span>
+            <span class="promo-price-old">S/ 89</span>
+          </div>
+          <ul class="promo-features">
+            <li>Tela suave y respirable</li>
+            <li>Disponible en 2 modelos</li>
+          </ul>
+          <a href="https://wa.me/51930427807?text=Hola! Quiero información sobre las pijamas" class="promo-cta" target="_blank" rel="noopener">
+            Consultar por WhatsApp
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <p class="section-label">accesorios</p>
+      <h2 class="section-title">Bolsos</h2>
+      <div class="bag-card">
+        <div class="bag-gallery-row">
+          <img src="bolso1.png.jpeg" alt="Bolso cuero negro - vista frontal">
+          <img src="bolso2.png.jpeg" alt="Bolso cuero negro - vista lateral">
+          <img src="bolso3.png.jpeg" alt="Bolso cuero negro - en uso">
+        </div>
+        <div class="bag-card-info">
+          <span class="bag-badge">nuevo</span>
+          <h3 class="bag-name">Bolso cuero negro</h3>
+          <p class="bag-desc">Bolso de cuero sintetico negro, elegante y resistente. Ideal para el dia a dia.</p>
+          <div class="bag-card-bottom">
+            <span class="product-price">S/ 50</span>
+            <a href="https://wa.me/51930427807?text=Hola! Quiero el bolso cuero negro" class="product-cta" target="_blank" rel="noopener">Comprar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="nosotros" class="section" style="background: var(--blush);">
+    <div class="section-inner" style="max-width: 680px; margin: 0 auto; text-align: center;">
+      <p class="section-label">nuestra historia</p>
+      <h2 class="section-title">Regalar es un acto de carino</h2>
+      <p style="font-size: clamp(0.95rem, 1.5vw, 1.05rem); line-height: 1.8; color: var(--cocoa-light); margin-bottom: 16px; font-weight: 300;">En Angell Boutique creemos que los regalos mas bonitos son los que vienen del corazon. Cada peluche que elegimos esta hecho con amor y suavidad para convertir cualquier momento en algo especial.</p>
+      <p style="font-size: clamp(0.95rem, 1.5vw, 1.05rem); line-height: 1.8; color: var(--cocoa-light); margin-bottom: 24px; font-weight: 300;">No somos una tienda mas. Somos ese lugar al que vas cuando quieres que alguien sepa que lo quieres.</p>
+      <span class="about-tagline" style="font-family: 'Fraunces', serif; font-style: italic; font-size: 1.3rem; color: var(--dusty-rose);">Regala ternura, regala Angell</span>
+    </div>
+  </section>
+
+  <section id="contacto" class="section">
+    <div class="section-inner">
+      <p class="section-label">escríbenos</p>
+      <h2 class="section-title">Estamos para ayudarte</h2>
+      <div class="contact-grid">
+        <a href="https://wa.me/51930427807" class="contact-card" target="_blank" rel="noopener">
+          <span class="contact-icon whatsapp">
+            <svg viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </span>
+          <div>
+            <span class="contact-label">WhatsApp</span>
+            <span class="contact-value">930 427 807</span>
+          </div>
+        </a>
+        <a href="https://instagram.com/angellboutiquepe" class="contact-card" target="_blank" rel="noopener">
+          <span class="contact-icon instagram">
+            <svg viewBox="0 0 24 24" fill="#E1306C"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.665 4.771-4.919 4.919-1.266.058-1.646.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </span>
+          <div>
+            <span class="contact-label">Instagram</span>
+            <span class="contact-value">@angellboutiquepe</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>Hecho con <span class="heart">&hearts;</span> por Angell Boutique</p>
+  </footer>
+
+</body>
+</html>
