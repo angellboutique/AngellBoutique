@@ -633,8 +633,13 @@
       .promo-gallery img { aspect-ratio: 1 / 1; }
 
       .product-grid { grid-template-columns: 1fr; gap: 20px; }
-      .bag-gallery-row { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
-      .bag-gallery-row img { flex: 0 0 80%; scroll-snap-align: start; aspect-ratio: 4 / 3; }
+      .bag-gallery-row { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+      .bag-gallery-row::-webkit-scrollbar { display: none; }
+      .bag-gallery-row img { flex: 0 0 100%; scroll-snap-align: start; aspect-ratio: 4 / 3; object-position: center 60%; }
+      .bag-gallery-row img:nth-child(3) { object-position: center center; }
+      .bag-dots { display: flex; justify-content: center; gap: 8px; padding: 14px 0 0; }
+      .bag-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--linen); border: none; cursor: pointer; padding: 0; transition: background 0.3s; }
+      .bag-dot.active { background: var(--dusty-rose); }
 
       .about-grid { grid-template-columns: 1fr; }
       .about-image { max-height: 320px; }
@@ -798,10 +803,15 @@
       <p class="section-label">accesorios</p>
       <h2 class="section-title">Bolsos</h2>
       <div class="bag-card">
-        <div class="bag-gallery-row">
+        <div class="bag-gallery-row" id="bagGallery">
           <img src="bolso1.png.jpeg" alt="Bolso cuero negro - vista frontal">
           <img src="bolso2.png.jpeg" alt="Bolso cuero negro - vista lateral">
           <img src="bolso3.png.jpeg" alt="Bolso cuero negro - en uso">
+        </div>
+        <div class="bag-dots" id="bagDots">
+          <button class="bag-dot active" data-index="0" aria-label="Foto 1"></button>
+          <button class="bag-dot" data-index="1" aria-label="Foto 2"></button>
+          <button class="bag-dot" data-index="2" aria-label="Foto 3"></button>
         </div>
         <div class="bag-card-info">
           <span class="bag-badge">nuevo</span>
@@ -856,6 +866,26 @@
   <footer class="footer">
     <p>Hecho con <span class="heart">&hearts;</span> por Angell Boutique</p>
   </footer>
+
+  <script>
+    (function() {
+      var gallery = document.getElementById('bagGallery');
+      var dots = document.querySelectorAll('.bag-dot');
+      if (!gallery || !dots.length) return;
+
+      gallery.addEventListener('scroll', function() {
+        var idx = Math.round(gallery.scrollLeft / gallery.offsetWidth);
+        dots.forEach(function(d, i) { d.classList.toggle('active', i === idx); });
+      });
+
+      dots.forEach(function(dot) {
+        dot.addEventListener('click', function() {
+          var i = parseInt(this.dataset.index);
+          gallery.scrollTo({ left: gallery.offsetWidth * i, behavior: 'smooth' });
+        });
+      });
+    })();
+  </script>
 
 </body>
 </html>
