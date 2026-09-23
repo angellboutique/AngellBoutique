@@ -230,8 +230,9 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center top;
       display: block;
-      aspect-ratio: 1 / 1;
+      aspect-ratio: 3 / 4;
       background: var(--blush);
     }
 
@@ -657,8 +658,8 @@
       .hero-image img { max-width: 260px; border-radius: 120px 120px 20px 20px; }
 
       .promo-card { grid-template-columns: 1fr; border-radius: 20px; }
-      .promo-gallery { gap: 0; }
-      .promo-gallery img { aspect-ratio: 3 / 4; }
+      .promo-gallery { gap: 0; grid-template-rows: auto auto; }
+      .promo-gallery img { aspect-ratio: 3 / 4; object-position: center top; height: auto; }
       .promo-details { padding: 28px 22px 26px; }
 
       .product-grid { grid-template-columns: 1fr; gap: 20px; }
