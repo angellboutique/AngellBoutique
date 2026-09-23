@@ -205,122 +205,145 @@
       margin-bottom: 48px;
     }
 
-    /* ─── Promo Editorial ─── */
-    .promo-editorial {
+    /* ─── Promo Editorial — replica imagen ─── */
+    .promo-card {
       display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: clamp(32px, 5vw, 72px);
-      align-items: center;
+      grid-template-columns: 1.72fr 1fr;
+      background: #FFF9F1;
+      border: 1px solid #F0E6DE;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(59,42,36,0.07);
+      max-width: 1100px;
+      margin: 0 auto;
     }
 
     .promo-gallery {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      grid-template-rows: 1fr 1fr;
+      gap: 0;
+      background: transparent;
     }
 
     .promo-gallery img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 16px;
-      aspect-ratio: 3 / 4;
+      display: block;
+      aspect-ratio: 1 / 1;
       background: var(--blush);
     }
 
-    .promo-details {}
-
-    .promo-tag {
-      font-family: 'Fraunces', serif;
-      font-style: italic;
-      font-size: 0.85rem;
-      color: var(--dusty-rose);
-      margin-bottom: 12px;
+    .promo-details {
+      background: #FFF9F1;
+      padding: 36px 36px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .promo-title {
       font-family: 'Fraunces', serif;
-      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-size: clamp(1.45rem, 2.4vw, 1.9rem);
       font-weight: 700;
       color: var(--cocoa);
       line-height: 1.15;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .promo-title em {
+      font-style: italic;
+      font-weight: 400;
+      color: #C99AA5;
+      letter-spacing: -0.01em;
     }
 
     .promo-desc {
-      font-size: 0.95rem;
-      color: var(--cocoa-light);
-      line-height: 1.75;
-      margin-bottom: 28px;
-      font-weight: 300;
-      max-width: 420px;
+      font-size: 0.88rem;
+      color: #8A7A76;
+      line-height: 1.65;
+      margin-bottom: 22px;
+      font-weight: 400;
+      max-width: 360px;
     }
 
     .promo-price-row {
       display: flex;
       align-items: baseline;
-      gap: 12px;
-      margin-bottom: 28px;
+      gap: 10px;
+      margin-bottom: 18px;
     }
 
     .promo-price {
       font-family: 'Fraunces', serif;
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--dusty-rose);
+      font-size: 1.85rem;
+      font-weight: 400;
+      color: var(--cocoa);
+      letter-spacing: -0.02em;
+      line-height: 1;
     }
 
     .promo-price-old {
-      font-size: 1rem;
+      font-size: 0.85rem;
       font-weight: 400;
-      color: var(--cocoa-light);
+      color: #9A8B88;
       text-decoration: line-through;
     }
 
     .promo-features {
       list-style: none;
-      margin-bottom: 32px;
+      margin-bottom: 22px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 7px;
     }
 
     .promo-features li {
-      font-size: 0.9rem;
-      color: var(--cocoa-light);
-      padding-left: 20px;
+      font-size: 0.86rem;
+      color: #6B5A54;
+      padding-left: 16px;
       position: relative;
+      font-weight: 400;
     }
 
     .promo-features li::before {
-      content: '~';
+      content: '•';
       position: absolute;
       left: 0;
-      color: var(--dusty-rose);
-      font-family: 'Fraunces', serif;
+      color: var(--cocoa);
+      font-size: 0.9rem;
+      line-height: 1.4;
     }
 
     .promo-cta {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 10px;
-      padding: 14px 32px;
-      background: var(--dusty-rose);
-      color: var(--cream);
+      padding: 15px 26px;
+      background: #1A0F0E;
+      color: #FFFFFF;
       text-decoration: none;
       font-family: 'Outfit', sans-serif;
-      font-weight: 500;
-      font-size: 0.9rem;
-      border-radius: 60px;
-      transition: background 0.3s, transform 0.2s;
+      font-weight: 600;
+      font-size: 0.85rem;
+      border-radius: 999px;
+      transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+      box-shadow: 0 6px 18px rgba(26,15,14,0.18);
+      align-self: flex-start;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
     }
 
     .promo-cta:hover {
-      background: var(--cocoa);
-      transform: translateY(-2px);
+      background: #2B1B19;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(26,15,14,0.22);
     }
 
-    .promo-cta svg { width: 16px; height: 16px; }
+    .promo-cta svg { width: 16px; height: 16px; display: none; }
 
     /* ─── Products ─── */
     .product-grid {
@@ -633,9 +656,10 @@
       .hero-image { order: 1; margin-bottom: 16px; }
       .hero-image img { max-width: 260px; border-radius: 120px 120px 20px 20px; }
 
-      .promo-editorial { grid-template-columns: 1fr; }
-      .promo-gallery { grid-template-columns: 1fr 1fr; }
-      .promo-gallery img { aspect-ratio: 1 / 1; }
+      .promo-card { grid-template-columns: 1fr; border-radius: 20px; }
+      .promo-gallery { gap: 0; }
+      .promo-gallery img { aspect-ratio: 3 / 4; }
+      .promo-details { padding: 28px 22px 26px; }
 
       .product-grid { grid-template-columns: 1fr; gap: 20px; }
       .bag-gallery-row { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
@@ -772,20 +796,19 @@
     </div>
   </section>
 
-  <section id="promociones" class="section" style="background: var(--blush);">
+  <section id="promociones" class="section" style="padding-top: 24px; padding-bottom: 24px;">
     <div class="section-inner">
-      <p class="section-label">ofertas</p>
+      <p class="section-label">ofertas especiales</p>
       <h2 class="section-title">Promociones</h2>
-      <div class="promo-editorial">
+      <div class="promo-card">
         <div class="promo-gallery">
-          <img src="pijamapose1.png" alt="Pijama Angell Boutique">
-          <img src="pijamapose2.png" alt="Pijama Angell Boutique">
-          <img src="pijamapose3.png" alt="Pijama Angell Boutique">
-          <img src="pijamapose4.png" alt="Pijama Angell Boutique">
+          <img src="pijamapose1.png" alt="Pijama lila satinada - pose 1">
+          <img src="pijamapose2.png" alt="Pijama lila satinada - pose 2 con Hello Kitty">
+          <img src="pijamapose3.png" alt="Pijama rayas rosa - leyendo">
+          <img src="pijamapose4.png" alt="Pijama rayas rosa - recostada">
         </div>
         <div class="promo-details">
-          <p class="promo-tag">nueva coleccion</p>
-          <h3 class="promo-title">Pijamas de la casa</h3>
+          <h3 class="promo-title">Pijamas <em>de la casa</em></h3>
           <p class="promo-desc">Dos modelos para elijas tu favorita. Super suaves, perfectas para noches de movie y chocolate caliente.</p>
           <div class="promo-price-row">
             <span class="promo-price">S/ 59</span>
@@ -795,10 +818,7 @@
             <li>Tela suave y respirable</li>
             <li>Disponible en 2 modelos</li>
           </ul>
-          <a href="https://wa.me/51930427807?text=Hola! Quiero información sobre las pijamas" class="promo-cta" target="_blank" rel="noopener">
-            Consultar por WhatsApp
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
+          <a href="https://wa.me/51930427807?text=Hola! Quiero información sobre las pijamas - consultar disponibilidad" class="promo-cta" target="_blank" rel="noopener">Consultar disponibilidad por WhatsApp</a>
         </div>
       </div>
     </div>
