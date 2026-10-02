@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://res.cloudinary.com; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://www.gstatic.com https://api.cloudinary.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -373,7 +373,60 @@
       overflow: hidden;
       aspect-ratio: 1 / 1;
       background: var(--blush);
+      position: relative;
     }
+
+    .badge-agotado {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: #3B2A24;
+      color: #FDF8F4;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 6px 14px;
+      border-radius: 60px;
+      z-index: 2;
+    }
+    .product-card.is-agotado .product-img { filter: grayscale(35%); opacity: 0.85; }
+    .product-cta.is-disabled { background: #B9ABA7; cursor: not-allowed; transform: none; pointer-events: none; }
+
+    /* ─── Carrusel multi-foto en cards (puntitos como en Bolsos) ─── */
+    .pcar-track {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .pcar-track::-webkit-scrollbar { display: none; }
+    .pcar-slide { flex: 0 0 100%; scroll-snap-align: start; height: 100%; }
+    .pcar-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .pcar-dots {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      z-index: 3;
+    }
+    .pcar-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.65);
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(59,42,36,0.4);
+      transition: background 0.25s, transform 0.2s;
+    }
+    .pcar-dot.active { background: var(--dusty-rose); transform: scale(1.25); }
 
     .product-img {
       width: 100%;
@@ -553,7 +606,14 @@
       object-fit: cover;
       aspect-ratio: 3 / 4;
       display: block;
+      max-height: 520px;
     }
+
+    .bag-dots { display: none; }
+
+    /* ─── Vista portada: card grande a lo ancho (3 fotos en PC, carrusel en móvil) ─── */
+    li.bag-card { grid-column: 1 / -1; list-style: none; }
+    .bag-card .bag-gallery-row { position: relative; }
 
     .bag-card-info {
       padding: 22px 24px 24px;
@@ -804,6 +864,7 @@
       <li><a href="#productos">Productos</a></li>
       <li><a href="#promociones">Promociones</a></li>
       <li><a href="#bolsos">Bolsos</a></li>
+      <li><a href="#pijamas">Pijamas</a></li>
       <li><a href="#llaveros">Llaveros</a></li>
       <li><a href="#nosotros">Nosotros</a></li>
       <li><a href="#contacto">Contacto</a></li>
@@ -834,7 +895,7 @@
     <div class="section-inner">
       <p class="section-label">para regalar</p>
       <h2 class="section-title">Nuestros peluches</h2>
-      <ul class="product-grid">
+      <ul class="product-grid" id="grid-peluches">
         <li class="product-card">
           <div class="product-img-wrap"><img src="oso.png" alt="Osito" class="product-img"></div>
           <div class="product-info">
@@ -988,28 +1049,7 @@
     <div class="section-inner">
       <p class="section-label">accesorios</p>
       <h2 class="section-title">Bolsos</h2>
-      <div class="bag-card">
-        <div class="bag-gallery-row" id="bagGallery">
-          <img src="bolso1.png.jpeg" alt="Bolso cuero negro - vista frontal">
-          <img src="bolso2.png.jpeg" alt="Bolso cuero negro - vista lateral">
-          <img src="bolso3.png.jpeg" alt="Bolso cuero negro - en uso">
-        </div>
-        <div class="bag-dots" id="bagDots">
-          <button class="bag-dot active" data-index="0" aria-label="Foto 1"></button>
-          <button class="bag-dot" data-index="1" aria-label="Foto 2"></button>
-          <button class="bag-dot" data-index="2" aria-label="Foto 3"></button>
-        </div>
-        <div class="bag-card-info">
-          <span class="bag-badge">nuevo</span>
-          <h3 class="bag-name">Bolso cuero negro</h3>
-          <p class="bag-desc">Bolso de cuero sintetico negro, elegante y resistente. Ideal para el dia a dia.</p>
-          <div class="bag-card-bottom">
-            <span class="product-price">S/ 50</span>
-            <a href="https://wa.me/51930427807?text=Hola! Quiero el bolso cuero negro" class="product-cta" target="_blank" rel="noopener">Comprar</a>
-          </div>
-        </div>
-      </div>
-      <ul class="bag-grid product-grid">
+      <ul class="bag-grid product-grid" id="grid-bolsos">
         <li class="product-card">
           <div class="product-img-wrap"><img src="bolsolargo.png" alt="Bolso largo" class="product-img"></div>
           <div class="product-info">
@@ -1058,11 +1098,19 @@
     </div>
   </section>
 
+  <section id="pijamas" class="section" style="padding-top: 24px; display: none;">
+    <div class="section-inner">
+      <p class="section-label">para dormir</p>
+      <h2 class="section-title">Pijamas</h2>
+      <ul class="product-grid" id="grid-pijamas"></ul>
+    </div>
+  </section>
+
   <section id="llaveros" class="section" style="padding-top: 24px;">
     <div class="section-inner">
       <p class="section-label">acompaña tu cartera</p>
       <h2 class="section-title">Llaveros</h2>
-      <ul class="product-grid">
+      <ul class="product-grid" id="grid-llaveros">
         <li class="product-card">
           <div class="product-img-wrap"><img src="llaverocordero.png" alt="Llavero cordero" class="product-img"></div>
           <div class="product-info">
@@ -1139,23 +1187,170 @@
     <p>Hecho con <span class="heart">&hearts;</span> por Angell Boutique</p>
   </footer>
 
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <script>
-    (function() {
-      var gallery = document.getElementById('bagGallery');
-      var dots = document.querySelectorAll('.bag-dot');
-      if (!gallery || !dots.length) return;
-
-      gallery.addEventListener('scroll', function() {
-        var idx = Math.round(gallery.scrollLeft / gallery.offsetWidth);
-        dots.forEach(function(d, i) { d.classList.toggle('active', i === idx); });
-      });
-
-      dots.forEach(function(dot) {
-        dot.addEventListener('click', function() {
-          var i = parseInt(this.dataset.index);
-          gallery.scrollTo({ left: gallery.offsetWidth * i, behavior: 'smooth' });
+    // Carrusel de las cards portada (3 fotos en PC, deslizable con puntitos en móvil)
+    function initBagGallery() {
+      document.querySelectorAll(".bag-gallery-row").forEach(function(gallery) {
+        var card = gallery.closest(".bag-card");
+        var dots = card ? card.querySelectorAll(".bag-dot") : [];
+        if (!gallery.dataset.bound) {
+          gallery.dataset.bound = "1";
+          gallery.addEventListener("scroll", function() {
+            var w = gallery.clientWidth || 1;
+            var idx = Math.round(gallery.scrollLeft / w);
+            dots.forEach(function(d, i) { d.classList.toggle("active", i === idx); });
+          });
+        }
+        dots.forEach(function(dot) {
+          if (dot.dataset.bound) return;
+          dot.dataset.bound = "1";
+          dot.addEventListener("click", function() {
+            gallery.scrollTo({ left: gallery.clientWidth * parseInt(dot.dataset.index || "0", 10), behavior: "smooth" });
+          });
         });
       });
+    }
+    initBagGallery();
+  </script>
+  <script>
+    // Tienda dinámica: lee Firestore y re-renderiza peluches / bolsos / pijamas / llaveros.
+    // Si Firestore falla o está vacío, se conserva el HTML estático como respaldo.
+    (function() {
+      var firebaseConfig = {
+        apiKey: "AIzaSyAkcG7nBvPsVtafc6KOyyct9dymP1F34gc",
+        authDomain: "angellboutique.firebaseapp.com",
+        projectId: "angellboutique",
+        storageBucket: "angellboutique.firebasestorage.app",
+        messagingSenderId: "58971829714",
+        appId: "1:58971829714:web:138d11509aab116614840b"
+      };
+      var WA = "51930427807";
+      function esc(s){ return String(s == null ? "" : s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+      function normPhotos(p){
+        if (p.imagenes && p.imagenes.length) return p.imagenes.map(function(f){
+          if (typeof f === "string") return { url: f, x: 50, y: 50, z: 100 };
+          return { url: f.url || f.imagen || "oso.png", x: f.x != null ? f.x : (f.imgX != null ? f.imgX : 50), y: f.y != null ? f.y : (f.imgY != null ? f.imgY : 50), z: f.z != null ? f.z : (f.imgZ != null ? f.imgZ : 100) };
+        });
+        return [{ url: p.imagen || "oso.png", x: p.imgX != null ? p.imgX : 50, y: p.imgY != null ? p.imgY : 50, z: p.imgZ != null ? p.imgZ : 100 }];
+      }
+      function imgStyle(ph){
+        var pos = ph.x + "% " + ph.y + "%";
+        var z = ph.z / 100;
+        return z > 1.01
+          ? ("object-position:" + esc(pos) + ";transform:scale(" + z + ");transform-origin:" + esc(pos))
+          : ("object-position:" + esc(pos));
+      }
+      function mediaHTML(p, uid){
+        var photos = normPhotos(p);
+        var badge = p.agotado ? '<span class="badge-agotado">AGOTADO</span>' : '';
+        if (photos.length <= 1) {
+          var ph = photos[0];
+          return badge + '<img src="' + esc(ph.url) + '" alt="' + esc(p.nombre || "Producto") + '" class="product-img" loading="lazy" style="' + imgStyle(ph) + '" onerror="this.src=\'oso.png\'">';
+        }
+        var slides = photos.map(function(ph){
+          return '<div class="pcar-slide"><img src="' + esc(ph.url) + '" alt="' + esc(p.nombre || "Producto") + '" loading="lazy" style="' + imgStyle(ph) + '" onerror="this.src=\'oso.png\'"></div>';
+        }).join("");
+        var dots = photos.map(function(_, i){
+          return '<button class="pcar-dot' + (i === 0 ? ' active' : '') + '" data-i="' + i + '" data-t="track-' + uid + '" aria-label="Foto ' + (i + 1) + '"></button>';
+        }).join("");
+        return badge +
+          '<div class="pcar-track" id="track-' + uid + '">' + slides + '</div>' +
+          '<div class="pcar-dots" id="dots-track-' + uid + '">' + dots + '</div>';
+      }
+      var uidSeq = 0;
+      function isPortada(p){ return p.portada === true || p.destacado === true; }
+      function portadaCard(p){
+        var agot = !!p.agotado;
+        var waText = "Hola! Quiero " + (p.nombre || "este producto");
+        var href = agot ? "#" : ("https://wa.me/" + WA + "?text=" + encodeURIComponent(waText));
+        var photos = normPhotos(p);
+        var cols = "repeat(" + Math.min(Math.max(photos.length, 1), 3) + ", 1fr)";
+        var gal = photos.map(function(ph, i){
+          return '<img src="' + esc(ph.url) + '" alt="' + esc((p.nombre || "Producto") + " - foto " + (i + 1)) + '" style="' + imgStyle(ph) + '" onerror="this.src=\'oso.png\'">';
+        }).join("");
+        var dots = photos.length > 1
+          ? '<div class="bag-dots">' + photos.map(function(_, i){
+              return '<button class="bag-dot' + (i === 0 ? " active" : "") + '" data-index="' + i + '" aria-label="Foto ' + (i + 1) + '"></button>';
+            }).join("") + '</div>'
+          : '';
+        return '<li class="bag-card">' +
+          '<div class="bag-gallery-row" style="grid-template-columns:' + cols + '">' +
+            (agot ? '<span class="badge-agotado">AGOTADO</span>' : '') + gal +
+          '</div>' + dots +
+          '<div class="bag-card-info">' +
+            '<span class="bag-badge">' + esc(p.etiqueta || "nuevo") + '</span>' +
+            '<h3 class="bag-name">' + esc(p.nombre || "") + '</h3>' +
+            '<p class="bag-desc">' + esc(p.descripcion || "") + '</p>' +
+            '<div class="bag-card-bottom">' +
+              '<span class="product-price">S/ ' + esc(p.precio != null ? p.precio : "–") + '</span>' +
+              (agot
+                ? '<span class="product-cta is-disabled">Agotado</span>'
+                : '<a href="' + href + '" class="product-cta" target="_blank" rel="noopener">Comprar</a>') +
+            '</div>' +
+          '</div></li>';
+      }
+      function card(p){
+        if (isPortada(p)) return portadaCard(p);
+        var agot = !!p.agotado;
+        var waText = "Hola! Quiero " + (p.nombre || "este producto");
+        var href = agot ? "#" : ("https://wa.me/" + WA + "?text=" + encodeURIComponent(waText));
+        var uid = "p" + (uidSeq++);
+        return '<li class="product-card' + (agot ? ' is-agotado' : '') + '">' +
+          '<div class="product-img-wrap">' + mediaHTML(p, uid) + '</div>' +
+          '<div class="product-info">' +
+            '<h3 class="product-name">' + esc(p.nombre || "") + '</h3>' +
+            '<p class="product-desc">' + esc(p.descripcion || "") + '</p>' +
+            '<div class="product-bottom">' +
+              '<span class="product-price">S/ ' + esc(p.precio != null ? p.precio : "–") + '</span>' +
+              (agot
+                ? '<span class="product-cta is-disabled">Agotado</span>'
+                : '<a href="' + href + '" class="product-cta" target="_blank" rel="noopener">Comprar</a>') +
+            '</div>' +
+          '</div></li>';
+      }
+      function initCarousels(){
+        document.querySelectorAll(".pcar-track").forEach(function(track){
+          if (track.dataset.bound) return;
+          track.dataset.bound = "1";
+          var dotsBox = document.getElementById("dots-" + track.id);
+          var dots = dotsBox ? dotsBox.querySelectorAll(".pcar-dot") : [];
+          track.addEventListener("scroll", function(){
+            var idx = Math.round(track.scrollLeft / track.clientWidth);
+            dots.forEach(function(d, i){ d.classList.toggle("active", i === idx); });
+          });
+          dots.forEach(function(d){
+            d.addEventListener("click", function(){
+              track.scrollTo({ left: track.clientWidth * parseInt(d.dataset.i), behavior: "smooth" });
+            });
+          });
+        });
+      }
+      function fill(id, items){
+        var ul = document.getElementById(id);
+        if (!ul || !items.length) return false;
+        uidSeq = 0;
+        ul.innerHTML = items.map(card).join("");
+        initCarousels();
+        try { initBagGallery(); } catch(e){}
+        return true;
+      }
+      try {
+        firebase.initializeApp(firebaseConfig);
+        var db = firebase.firestore();
+        db.collection("products").orderBy("orden").get().then(function(snap){
+          var all = snap.docs.map(function(d){ var o = d.data(); o.id = d.id; return o; })
+            .filter(function(p){ return p.visible !== false; });
+          if (!all.length) return; // conserva HTML estático
+          fill("grid-peluches", all.filter(function(p){ return (p.categoria||"peluches") === "peluches"; }));
+          fill("grid-bolsos", all.filter(function(p){ return p.categoria === "bolsos"; }));
+          var pij = all.filter(function(p){ return p.categoria === "pijamas"; });
+          var secPij = document.getElementById("pijamas");
+          if (pij.length && secPij) { fill("grid-pijamas", pij); secPij.style.display = ""; }
+          fill("grid-llaveros", all.filter(function(p){ return p.categoria === "llaveros"; }));
+        }).catch(function(){ /* sin conexión: se queda el HTML estático */ });
+      } catch(e){ /* SDK bloqueado: se queda el HTML estático */ }
     })();
   </script>
 

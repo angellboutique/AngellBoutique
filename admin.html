@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin — Angell Boutique</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--cream:#FDF8F4;--cocoa:#3B2A24;--light:#6B5A54;--rose:#C4898E;--blush:#F0D9DD;--linen:#EDE4DD;--surface:#fff}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--cream);color:var(--cocoa);min-height:100vh}
+.top{position:sticky;top:0;z-index:10;background:rgba(253,248,244,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--linen);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.top img{height:36px}
+.top .who{font-size:.8rem;color:var(--light)}
+.btn{border:none;cursor:pointer;border-radius:999px;font-weight:600;transition:.2s}
+.btn-dark{background:var(--cocoa);color:#fff;padding:12px 22px;font-size:.85rem}
+.btn-dark:hover{background:var(--rose)}
+.btn-ghost{background:#fff;border:1px solid var(--linen);color:var(--cocoa);padding:10px 18px;font-size:.8rem}
+.btn-danger{background:#fff;border:1px solid #e5b4b4;color:#a33;padding:8px 14px;font-size:.78rem}
+.btn-small{padding:8px 14px;font-size:.75rem}
+.wrap{max-width:980px;margin:0 auto;padding:24px 20px 60px}
+.card{background:var(--surface);border:1px solid var(--linen);border-radius:18px;padding:22px}
+h1{font-size:1.4rem;margin-bottom:6px}
+.sub{color:var(--light);font-size:.88rem;margin-bottom:18px}
+input,select,textarea{width:100%;padding:12px 14px;border:1px solid var(--linen);border-radius:12px;font-size:.9rem;font-family:inherit;background:#fff;color:var(--cocoa)}
+textarea{resize:vertical;min-height:70px}
+label{font-size:.78rem;font-weight:600;display:block;margin:14px 0 6px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.login{max-width:380px;margin:8vh auto}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0;align-items:center}
+.search{flex:1;min-width:180px}
+.plist{display:grid;gap:12px}
+.pitem{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;background:#fff;border:1px solid var(--linen);border-radius:16px;padding:12px 14px}
+.pitem img{width:64px;height:64px;object-fit:cover;border-radius:12px;background:var(--blush)}
+.pname{font-weight:700;font-size:.92rem}
+.pmeta{font-size:.78rem;color:var(--light)}
+.badges{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.badge{font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:999px}
+.b-agot{background:#3B2A24;color:#fff}
+.b-oculto{background:#eee;color:#888}
+.b-cat{background:var(--blush);color:var(--cocoa)}
+.actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.switch{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;font-weight:600;cursor:pointer;user-select:none}
+.dot{width:38px;height:22px;border-radius:999px;background:#ddd;position:relative;transition:.2s;flex-shrink:0}
+.dot::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.2s}
+.switch.on .dot{background:#2e7d32}
+.switch.on .dot::after{left:19px}
+.modal{position:fixed;inset:0;background:rgba(59,42,36,.45);display:none;align-items:flex-start;justify-content:center;padding:20px;z-index:50;overflow-y:auto}
+.modal.open{display:flex}
+.sheet{background:#fff;border-radius:20px;max-width:520px;width:100%;padding:24px;margin:auto}
+.preview{display:flex;gap:12px;align-items:center;margin-top:8px}
+.preview img{width:72px;height:72px;object-fit:cover;border-radius:12px;background:var(--blush)}
+.hint{font-size:.76rem;color:var(--light);background:#FFF9F1;border:1px dashed var(--linen);border-radius:12px;padding:10px 12px;margin-top:14px;line-height:1.5}
+.hidden{display:none!important}
+.msg{font-size:.82rem;margin-top:10px;min-height:1.2em}
+.msg.err{color:#a33}.msg.ok{color:#2e7d32}
+@media(max-width:640px){.pitem{grid-template-columns:52px 1fr}.actions{grid-column:1/-1;justify-content:flex-start}.row2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="top">
+  <img src="logo.png" alt="Angell Boutique">
+  <div style="display:flex;gap:10px;align-items:center">
+    <span class="who" id="who"></span>
+    <button class="btn btn-ghost btn-small hidden" id="btnOut">Salir</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <!-- LOGIN -->
+  <div class="card login" id="viewLogin">
+    <h1>Panel admin</h1>
+    <p class="sub">Acceso solo para Angell Boutique</p>
+    <label>Correo</label>
+    <input id="email" type="email" autocomplete="off" placeholder="Ingresa tu correo" value="">
+    <label>Contraseña</label>
+    <input id="pass" type="password" autocomplete="off" placeholder="Ingresa tu contraseña" value="">
+    <div style="margin-top:18px"><button class="btn btn-dark" id="btnLogin" style="width:100%">Entrar</button></div>
+    <p class="msg" id="loginMsg"></p>
+  </div>
+
+  <!-- APP -->
+  <div id="viewApp" class="hidden">
+    <h1>Productos <span id="count" style="font-size:.85rem;color:var(--light);font-weight:400"></span></h1>
+    <p class="sub">Edita precio, nombre, descripción, marca agotado u oculta. Se refleja al instante en la tienda.</p>
+    <div class="toolbar">
+      <input class="search" id="q" placeholder="Buscar producto...">
+      <select id="fcat" style="max-width:160px">
+        <option value="">Todas</option>
+        <option value="peluches">peluches</option>
+        <option value="bolsos">bolsos</option>
+        <option value="llaveros">llaveros</option>
+        <option value="pijamas">pijamas</option>
+      </select>
+      <button class="btn btn-dark btn-small" id="btnNew">+ Agregar</button>
+    </div>
+    <div class="plist" id="list"></div>
+    <div class="hint">
+      <b>Primera vez:</b> si tu lista está vacía, usa el botón <b>“Importar catálogo actual”</b> para cargar tus 16 productos de una vez.
+      <div style="margin-top:10px"><button class="btn btn-ghost btn-small" id="btnSeed">Importar catálogo actual (16 productos)</button></div>
+      <p class="msg" id="appMsg"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="sheet">
+    <h1 id="mTitle">Agregar producto</h1>
+    <p class="sub">Los campos con * son obligatorios.</p>
+    <input type="hidden" id="fId">
+    <label>Nombre *</label><input id="fNombre" placeholder="Ej: Cordero Abejita">
+    <label>Descripción</label><textarea id="fDesc" placeholder="Dulce como la miel..."></textarea>
+    <div class="row2">
+      <div><label>Precio S/ *</label><input id="fPrecio" type="number" min="0" step="0.5" placeholder="35"></div>
+      <div><label>Categoría *</label>
+        <select id="fCat"><option value="peluches">peluches</option><option value="bolsos">bolsos</option><option value="llaveros">llaveros</option><option value="pijamas">pijamas</option></select>
+      </div>
+    </div>
+    <label>Foto del producto *</label>
+    <input type="file" id="fFile" accept="image/*" multiple>
+    <div class="preview" style="flex-direction:column;align-items:stretch">
+      <div id="frameBox" title="Arrastra con clic izquierdo o derecho para encuadrar" style="border-radius:12px;overflow:hidden;background:#F3ECE7;border:1px dashed var(--linen);aspect-ratio:1/1;max-width:280px;position:relative;cursor:grab;user-select:none;-webkit-user-select:none">
+        <img id="pPrev" src="" alt="" draggable="false" style="width:100%;height:100%;object-fit:cover;display:none;pointer-events:none;user-select:none;-webkit-user-select:none;-webkit-user-drag:none">
+        <span id="noPhoto" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.82rem;color:var(--light)">Sin foto — elige una de tu galería</span>
+        <span id="focusDot" style="position:absolute;width:18px;height:18px;border-radius:50%;background:var(--rose);border:3px solid #fff;box-shadow:0 1px 6px rgba(0,0,0,.35);transform:translate(-50%,-50%);display:none;pointer-events:none"></span>
+      </div>
+      <span class="pmeta">Arrastra la foto para moverla y usa el zoom. Así se verá en la tienda.</span>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:8px">
+        <span style="font-size:1.1rem">−</span>
+        <input type="range" id="fZoom" min="100" max="250" value="100" style="flex:1">
+        <span style="font-size:1.1rem">+</span>
+        <b class="pmeta" id="vZ">100%</b>
+      </div>
+      <input type="hidden" id="fPosX" value="50"><input type="hidden" id="fPosY" value="50">
+      <label style="margin-top:14px">Fotos (<span id="phCount">0</span>) — toca una para encuadrarla · la 1ª es la portada</label>
+      <div id="phStrip" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+      <span class="pmeta" id="upMsg"></span>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <input id="fManual" placeholder="O escribe: bolso2.png.jpeg o pega un link https://..." style="flex:1;margin:0">
+      <button type="button" class="btn btn-ghost btn-small" id="btnAddManual" style="flex-shrink:0">+ Agregar</button>
+    </div>
+    <input id="fImg" type="hidden" value="">
+    <div class="row2">
+      <div><label>Agotado</label><div class="switch" id="sAgot"><span class="dot"></span><span>No</span></div></div>
+      <div><label>Visible en tienda</label><div class="switch on" id="sVis"><span class="dot"></span><span>Sí</span></div></div>
+      <div><label>🖼️ Vista portada</label><div class="switch" id="sDest"><span class="dot"></span><span>No</span></div><span class="pmeta">Grande: 3 fotos lado a lado</span></div>
+    </div>
+    <label>Orden</label><input id="fOrden" type="number" value="99">
+    <div style="display:flex;gap:10px;margin-top:20px">
+      <button class="btn btn-ghost" id="btnCancel" style="flex:1">Cancelar</button>
+      <button class="btn btn-dark" id="btnSave" style="flex:2">Guardar</button>
+    </div>
+    <p class="msg" id="mMsg"></p>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyAkcG7nBvPsVtafc6KOyyct9dymP1F34gc",
+  authDomain: "angellboutique.firebaseapp.com",
+  projectId: "angellboutique",
+  storageBucket: "angellboutique.firebasestorage.app",
+  messagingSenderId: "58971829714",
+  appId: "1:58971829714:web:138d11509aab116614840b"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+const $ = id => document.getElementById(id);
+let all = [], editAgot = false, editVis = true, editDest = false;
+let photos = [], selIdx = 0; // fotos del producto en edición: {url,x,y,z,pending}
+const WA = "51930427807";
+// Subida gratis sin tarjeta: crea cuenta en cloudinary.com, Settings > Upload > Add upload preset (Unsigned), y pega aquí:
+const CLOUD_NAME = "ljklarl9";
+const UPLOAD_PRESET = "angell";
+
+// --- Auth ---
+$('btnLogin').onclick = async () => {
+  $('loginMsg').textContent = ''; $('loginMsg').className = 'msg';
+  try {
+    await auth.signInWithEmailAndPassword($('email').value.trim(), $('pass').value);
+  } catch(e){ $('loginMsg').textContent = 'No se pudo entrar: ' + trad(e.code); $('loginMsg').className = 'msg err'; }
+};
+$('btnOut').onclick = () => auth.signOut();
+auth.onAuthStateChanged(u => {
+  const logged = !!u;
+  $('viewLogin').classList.toggle('hidden', logged);
+  $('viewApp').classList.toggle('hidden', !logged);
+  $('btnOut').classList.toggle('hidden', !logged);
+  $('who').textContent = '';
+  if (logged) load();
+});
+function trad(c){ return { 'auth/wrong-password':'contraseña incorrecta','auth/user-not-found':'usuario no existe','auth/invalid-credential':'correo o clave incorrectos','auth/too-many-requests':'demasiados intentos, espera un rato' }[c] || c; }
+
+// --- Load ---
+async function load(){
+  const snap = await db.collection('products').orderBy('orden').get();
+  all = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  render();
+}
+function render(){
+  const q = ($('q').value||'').toLowerCase(), c = $('fcat').value;
+  const f = all.filter(p => (!c || p.categoria===c) && (!q || (p.nombre+' '+(p.descripcion||'')).toLowerCase().includes(q)));
+  $('count').textContent = `(${f.length})`;
+  $('list').innerHTML = f.map(p => {
+    const th = (p.imagenes && p.imagenes[0] && (p.imagenes[0].url || p.imagenes[0])) || p.imagen || 'oso.png';
+    const nPh = (p.imagenes && p.imagenes.length) || 1;
+    return `
+    <div class="pitem">
+      <img src="${esc(th)}" onerror="this.src='oso.png'" alt="">
+      <div>
+        <div class="pname">${esc(p.nombre||'')} — S/ ${p.precio ?? '–'}</div>
+        <div class="pmeta">${esc(p.categoria||'')} · ${esc((p.descripcion||'').slice(0,60))}</div>
+        <div class="badges">
+          ${p.agotado?'<span class="badge b-agot">AGOTADO</span>':''}
+          ${p.visible===false?'<span class="badge b-oculto">OCULTO</span>':''}
+          ${(p.portada||p.destacado)?'<span class="badge b-agot">🖼️ PORTADA</span>':''}
+          <span class="badge b-cat">${esc(p.categoria||'')}</span>
+          ${nPh>1?'<span class="badge b-cat">📷 '+nPh+'</span>':''}
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-ghost btn-small" onclick="toggleAgot('${p.id}')">${p.agotado?'Marcar disponible':'Marcar agotado'}</button>
+        <button class="btn btn-ghost btn-small" onclick="openEdit('${p.id}')">Editar</button>
+        <button class="btn btn-danger btn-small" onclick="delP('${p.id}','${esc(p.nombre||'').replace(/'/g,"")}')">Borrar</button>
+      </div>
+    </div>`; }).join('') || '<p class="pmeta">Sin productos. Usa “Importar catálogo actual”.</p>';
+}
+$('q').oninput = render; $('fcat').onchange = render;
+window.toggleAgot = async (id) => {
+  const p = all.find(x=>x.id===id);
+  await db.collection('products').doc(id).update({ agotado: !p.agotado });
+  load();
+};
+window.delP = async (id, n) => {
+  if(!confirm(`¿Borrar "${n}"?`)) return;
+  await db.collection('products').doc(id).delete(); load();
+};
+
+// --- Modal ---
+function bindSwitch(el, get, set){
+  el.onclick = () => { set(!get()); el.classList.toggle('on', get()); el.querySelector('span:last-child').textContent = get() ? 'Sí' : 'No'; };
+}
+bindSwitch($('sAgot'), ()=>editAgot, v=>editAgot=v);
+bindSwitch($('sVis'), ()=>editVis, v=>editVis=v);
+bindSwitch($('sDest'), ()=>editDest, v=>editDest=v);
+function setSwitch(el, v){ el.classList.toggle('on', v); el.querySelector('span:last-child').textContent = v?'Sí':'No'; }
+$('btnNew').onclick = () => {
+  $('mTitle').textContent='Agregar producto'; $('fId').value='';
+  $('fNombre').value=''; $('fDesc').value=''; $('fPrecio').value=''; $('fCat').value='peluches';
+  $('fFile').value=''; photos=[]; selIdx=0; loadSel();
+  $('fOrden').value = (all.length? Math.max(...all.map(p=>p.orden||0))+1 : 1);
+  editAgot=false; editVis=true; editDest=false; setSwitch($('sAgot'),false); setSwitch($('sVis'),true); setSwitch($('sDest'),false);
+  $('mMsg').textContent=''; $('upMsg').textContent=''; $('modal').classList.add('open');
+};
+function normPhotos(p){
+  if(p.imagenes && p.imagenes.length) return p.imagenes.map(f => typeof f==='string' ? {url:f,x:50,y:50,z:100} : {url:f.url||f.imagen||'',x:f.x!=null?f.x:(f.imgX!=null?f.imgX:50),y:f.y!=null?f.y:(f.imgY!=null?f.imgY:50),z:f.z!=null?f.z:(f.imgZ!=null?f.imgZ:100)});
+  if(p.imagen) return [{url:p.imagen,x:p.imgX!=null?p.imgX:50,y:p.imgY!=null?p.imgY:50,z:p.imgZ!=null?p.imgZ:100}];
+  return [];
+}
+window.openEdit = (id) => {
+  const p = all.find(x=>x.id===id); if(!p) return;
+  $('mTitle').textContent='Editar producto'; $('fId').value=p.id;
+  $('fNombre').value=p.nombre||''; $('fDesc').value=p.descripcion||'';
+  $('fPrecio').value=p.precio??''; $('fCat').value=p.categoria||'peluches';
+  $('fFile').value=''; photos=normPhotos(p); selIdx=0; loadSel();
+  $('fOrden').value=p.orden??99;
+  editAgot=!!p.agotado; editVis=p.visible!==false; editDest=(p.portada===true||p.destacado===true); setSwitch($('sAgot'),editAgot); setSwitch($('sVis'),editVis); setSwitch($('sDest'),editDest);
+  $('mMsg').textContent=''; $('upMsg').textContent=''; $('modal').classList.add('open');
+};
+// Carga la foto seleccionada en el encuadrador
+function loadSel(){
+  const ph = photos[selIdx];
+  $('fImg').value = ph ? ph.url : '';
+  $('fPosX').value = ph ? ph.x : 50;
+  $('fPosY').value = ph ? ph.y : 50;
+  $('fZoom').value = ph ? ph.z : 100;
+  updPrev(); renderStrip();
+}
+// Guarda lo del encuadrador en la foto seleccionada
+function commitSel(){
+  const ph = photos[selIdx]; if(!ph) return;
+  ph.x = parseInt($('fPosX').value)||50;
+  ph.y = parseInt($('fPosY').value)||50;
+  ph.z = parseInt($('fZoom').value)||100;
+}
+function renderStrip(){
+  $('phCount').textContent = photos.length;
+  $('phStrip').innerHTML = photos.map((ph,i) => `
+    <div style="position:relative;width:62px;height:62px;border-radius:10px;overflow:hidden;border:${i===selIdx?'3px solid var(--rose)':'1px solid var(--linen)'};background:#F3ECE7;flex-shrink:0;${ph.pending?'opacity:.5':''}">
+      <img src="${esc(ph.url)}" data-act="sel" data-i="${i}" style="width:100%;height:100%;object-fit:cover;cursor:pointer" alt="foto ${i+1}">
+      <span style="position:absolute;top:2px;left:4px;font-size:.62rem;font-weight:800;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6)">${i+1}</span>
+      ${i!==0?`<button data-act="cover" data-i="${i}" title="Poner como portada" style="position:absolute;bottom:2px;left:2px;border:none;background:rgba(255,255,255,.9);border-radius:8px;font-size:.7rem;padding:1px 6px;cursor:pointer">★</button>`:''}
+      <button data-act="del" data-i="${i}" title="Quitar foto" style="position:absolute;top:2px;right:2px;border:none;background:rgba(255,255,255,.9);border-radius:8px;font-size:.7rem;padding:1px 6px;cursor:pointer">✕</button>
+    </div>`).join('');
+}
+$('phStrip').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-act]'); if(!b) return;
+  const i = parseInt(b.dataset.i), act = b.dataset.act;
+  if(act==='sel'){ commitSel(); selIdx=i; loadSel(); }
+  else if(act==='del'){ photos.splice(i,1); if(selIdx>=photos.length) selIdx=Math.max(0,photos.length-1); loadSel(); }
+  else if(act==='cover'){ commitSel(); const [ph]=photos.splice(i,1); photos.unshift(ph); selIdx=0; loadSel(); }
+});
+$('btnCancel').onclick = () => $('modal').classList.remove('open');
+$('modal').addEventListener('click', e => { if(e.target===$('modal')) $('modal').classList.remove('open'); });
+function updPrev(){
+  var src = ($('fImg').value || '').trim();
+  var x = $('fPosX').value || 50, y = $('fPosY').value || 50, z = ($('fZoom').value || 100) / 100;
+  var img = $('pPrev'), dot = $('focusDot'), empty = $('noPhoto');
+  $('vZ').textContent = $('fZoom').value + '%';
+  if(!src){ img.style.display='none'; img.src=''; empty.style.display='flex'; return; }
+  empty.style.display='none'; img.style.display='block';
+  img.style.objectPosition = x + '% ' + y + '%';
+  img.style.transformOrigin = x + '% ' + y + '%';
+  img.style.transform = z > 1.01 ? 'scale(' + z + ')' : '';
+  if(img.getAttribute('src') !== src) img.src = src;
+  dot.style.display='none';
+}
+$('pPrev').onerror = function(){ $('noPhoto').style.display='flex'; this.style.display='none'; };
+// Estilo Facebook: arrastrar la foto para encuadrar (cuadrado)
+(function(){
+  var box = $('frameBox'), drag = null;
+  box.style.touchAction = 'none';
+  box.addEventListener('contextmenu', (e) => e.preventDefault());
+  box.addEventListener('dragstart', (e) => e.preventDefault());
+  box.addEventListener('pointerdown', (e) => {
+    if(e.button !== undefined && e.button !== 0 && e.button !== 2) return;
+    e.preventDefault();
+    if(!$('pPrev').src || $('pPrev').style.display==='none') return;
+    drag = { sx:e.clientX, sy:e.clientY, x:parseFloat($('fPosX').value)||50, y:parseFloat($('fPosY').value)||50 };
+    box.setPointerCapture(e.pointerId);
+    box.style.cursor = 'grabbing';
+  });
+  box.addEventListener('pointermove', (e) => {
+    if(!drag) return;
+    const r = box.getBoundingClientRect();
+    $('fPosX').value = Math.min(100, Math.max(0, Math.round(drag.x - ((e.clientX - drag.sx) / r.width) * 100)));
+    $('fPosY').value = Math.min(100, Math.max(0, Math.round(drag.y - ((e.clientY - drag.sy) / r.height) * 100)));
+    updPrev(); commitSel();
+  });
+  ['pointerup','pointercancel','pointerleave'].forEach(ev => box.addEventListener(ev, () => { drag = null; box.style.cursor = 'grab'; }));
+})();
+$('fZoom').oninput = () => { updPrev(); commitSel(); };
+// Subir una o varias fotos del celular a Cloudinary (gratis, sin pasar por GitHub)
+$('fFile').onchange = async (e) => {
+  let files = [...e.target.files]; if(!files.length) return;
+  if(CLOUD_NAME.includes('PON-AQUI')){ $('upMsg').textContent = 'Falta configurar Cloudinary.'; return; }
+  // Candado en el código: solo imágenes de hasta 10 MB
+  files = files.filter(f => {
+    if(!f.type.startsWith('image/')){ $('upMsg').textContent = 'Solo se permiten fotos (no videos ni archivos).'; $('upMsg').style.color = '#a33'; return false; }
+    if(f.size > 10 * 1024 * 1024){ $('upMsg').textContent = '“' + f.name + '” pesa más de 10 MB, elige una más liviana.'; $('upMsg').style.color = '#a33'; return false; }
+    return true;
+  });
+  if(!files.length){ $('fFile').value=''; return; }
+  for(const f of files){
+    const blobURL = URL.createObjectURL(f);
+    photos.push({ url: blobURL, x: 50, y: 50, z: 100, pending: true });
+  }
+  selIdx = photos.length - 1; loadSel();
+  $('upMsg').textContent = 'Subiendo ' + files.length + ' foto(s)...'; $('upMsg').style.color = '#6B5A54';
+  let ok = 0;
+  for(let i = photos.length - files.length; i < photos.length; i++){
+    const fd = new FormData(); fd.append('file', files[i - (photos.length - files.length)]); fd.append('upload_preset', UPLOAD_PRESET);
+    try{
+      const r = await fetch('https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/image/upload', { method:'POST', body:fd });
+      const j = await r.json();
+      if(j.secure_url){ photos[i].url = j.secure_url; delete photos[i].pending; ok++; }
+    }catch(err){}
+  }
+  $('fFile').value = '';
+  loadSel();
+  $('upMsg').textContent = ok === files.length ? 'Foto(s) subida(s) ✓ — toca una para encuadrarla' : 'Se subieron ' + ok + ' de ' + files.length + '. Revisa tu conexión.';
+  $('upMsg').style.color = ok === files.length ? '#2e7d32' : '#a33';
+};
+$('btnAddManual').onclick = () => {
+  const v = ($('fManual').value || '').trim();
+  if(!v){ $('upMsg').textContent = 'Escribe primero el nombre del archivo o el link.'; $('upMsg').style.color = '#a33'; return; }
+  commitSel();
+  photos.push({ url: v, x: 50, y: 50, z: 100 });
+  $('fManual').value = '';
+  selIdx = photos.length - 1; loadSel();
+  $('upMsg').textContent = 'Foto agregada ✓ — tócala para encuadrarla'; $('upMsg').style.color = '#2e7d32';
+};
+$('btnSave').onclick = async () => {
+  commitSel();
+  const nombre=$('fNombre').value.trim(), precio=parseFloat($('fPrecio').value);
+  const clean = photos.filter(ph => ph.url && !ph.url.startsWith('blob:') && !ph.pending).map(ph => ({ url: ph.url, x: ph.x||50, y: ph.y||50, z: ph.z||100 }));
+  if(!nombre || isNaN(precio)){ $('mMsg').textContent='Completa nombre y precio.'; $('mMsg').className='msg err'; return; }
+  if(photos.some(ph => ph.pending || (ph.url||'').startsWith('blob:'))){ $('mMsg').textContent='Espera a que terminen de subir las fotos.'; $('mMsg').className='msg err'; return; }
+  if(!clean.length){ $('mMsg').textContent='Agrega al menos una foto.'; $('mMsg').className='msg err'; return; }
+  const first = clean[0];
+  const data = { nombre, descripcion:$('fDesc').value.trim(), precio, categoria:$('fCat').value, imagen:first.url, imgX:first.x, imgY:first.y, imgZ:first.z, imagenes:clean, portada:editDest, destacado:editDest, agotado:editAgot, visible:editVis, orden:parseInt($('fOrden').value)||99 };
+  $('btnSave').disabled=true;
+  try{
+    if($('fId').value) await db.collection('products').doc($('fId').value).update(data);
+    else await db.collection('products').add(data);
+    $('modal').classList.remove('open'); load();
+  }catch(e){ $('mMsg').textContent='Error: '+e.message; $('mMsg').className='msg err'; }
+  $('btnSave').disabled=false;
+};
+
+// --- Seed: importa tu catálogo actual de una vez ---
+$('btnSeed').onclick = async () => {
+  if(!confirm('¿Importar los 16 productos actuales a Firestore? Solo hazlo una vez.')) return;
+  const items = [
+    ["Winnie Pooh y Piglet","El oso miel y su mejor amigo. Suaves, tiernos y perfectos para abrazar.",35,"peluches","oso.png",1],
+    ["Gatito Garfield","El gato mas perezoso y divertido del mundo. Ahora en peluche para abrazar.",35,"peluches","gatito.png",2],
+    ["Corderito con tulipan amarillo","Corderito suave con tulipan amarillo. Delicado y perfecto para regalar.",30,"peluches","cordero.png",3],
+    ["Cordero Abejita","Dulce como la miel, suave como una nube.",30,"peluches","abejita.png",4],
+    ["Hello Kitty","La gatita mas famosa del mundo, ahora en peluche. Suave y con moñito.",35,"peluches","kitty.png",5],
+    ["Snoopy con flor","El perro mas querido del mundo, con una flor en la cabeza. Puro carino.",35,"peluches","snoopi.png.jpeg",6],
+    ["Cordero tulipan rosado","Corderito suave con tulipan rosado. Delicado y perfecto para regalar.",30,"peluches","corderotulipanrosado.png",7],
+    ["Snoopy celeste","Snoopy con polito celeste. Tierno compañero para todos los dias.",35,"peluches","snupi2.png",8],
+    ["Hello Kitty rosado","Hello Kitty con vestidito rosado. Dulce, suave y perfecta para regalar.",35,"peluches","kittyrosado.png",9],
+    ["Bolso blanco","Bolso alargado elegante, perfecto para salidas y uso diario.",42,"bolsos","bolsolargo.png",10],
+    ["Bolso negro","Bolso negro clásico con textura, combina con todo.",42,"bolsos","bolsonegro.png",11],
+    ["Bolso con peluche","Bolso suave estilo peluche, tierno y diferente.",42,"bolsos","bolsopeluche.png",12],
+    ["Cartera botón","Carterita compacta con detalle de botón, ideal para lo esencial.",29,"bolsos","bolsoboton.png",13],
+    ["Bolso cuero negro","Bolso de cuero sintetico negro, elegante y resistente. Ideal para el dia a dia.",50,"bolsos","bolso1.png.jpeg",14],
+    ["Llavero cordero","Mini corderito para tu cartera o llaves. Suave y tierno.",15,"llaveros","llaverocordero.png",15],
+    ["Llavero kitty","Mini kitty para acompañar tu cartera favorita.",15,"llaveros","llaverokitty.png",16]
+  ];
+  $('appMsg').textContent='Importando...'; $('appMsg').className='msg';
+  const batch = db.batch();
+  items.forEach(([nombre,descripcion,precio,categoria,imagen,orden])=>{
+    const isFeat = (nombre === 'Bolso cuero negro');
+    const gal = isFeat ? [{url:imagen,x:50,y:50,z:100},{url:'bolso2.png.jpeg',x:50,y:50,z:100},{url:'bolso3.png.jpeg',x:50,y:50,z:100}] : [{url:imagen,x:50,y:50,z:100}];
+    batch.set(db.collection('products').doc(), {nombre,descripcion,precio,categoria,imagen,imgX:50,imgY:50,imgZ:100,imagenes:gal,portada:isFeat,destacado:isFeat,agotado:false,visible:true,orden});
+  });
+  await batch.commit();
+  $('appMsg').textContent='Listo, 16 productos importados.'; $('appMsg').className='msg ok';
+  load();
+};
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+</script>
+</body>
+</html>
