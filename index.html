@@ -887,7 +887,7 @@
       animation: introLine 0.9s ease 0.5s forwards;
     }
 
-    #intro { transition: transform 0.7s cubic-bezier(0.76, 0, 0.24, 1), visibility 0.7s; }
+    #intro { transition: transform 0.45s cubic-bezier(0.76, 0, 0.24, 1), visibility 0.45s; }
     #intro.hidden { transform: translateY(-100%); visibility: hidden; opacity: 1; }
 
     @keyframes introIn { to { opacity: 1; transform: scale(1); } }
@@ -1408,11 +1408,12 @@
       } catch(e){ /* SDK bloqueado: se queda el HTML estático */ }
     })();
   window.addEventListener('load', function(){
-      setTimeout(function(){ document.getElementById('intro').classList.add('hidden'); }, 1600);
+      setTimeout(function(){ document.getElementById('intro').classList.add('hidden'); }, 1000);
     });
 </script>
 
 </body>
 </html>
+
 
 
