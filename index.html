@@ -853,9 +853,65 @@
       .product-card:hover .product-img { transform: none; }
       .nav-links a::after { transition: none; }
     }
-  </style>
+      /* ─── Intro loader ─── */
+    #intro {
+      position: fixed;
+      inset: 0;
+      background: var(--cream);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.6s ease, visibility 0.6s;
+    }
+
+    .intro-ring {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .intro-ring img {
+      width: 130px;
+      opacity: 0;
+      transform: scale(0.88);
+      animation: introIn 0.9s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+    }
+
+    .intro-line {
+      width: 0;
+      height: 1.5px;
+      background: var(--dusty-rose);
+      animation: introLine 0.9s ease 0.5s forwards;
+    }
+
+    #intro { transition: transform 0.7s cubic-bezier(0.76, 0, 0.24, 1), visibility 0.7s; }
+    #intro.hidden { transform: translateY(-100%); visibility: hidden; opacity: 1; }
+
+    @keyframes introIn { to { opacity: 1; transform: scale(1); } }
+    @keyframes introLine { to { width: 140px; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .intro-ring img, .intro-line { animation: none; opacity: 1; width: 140px; transform: none; }
+      #intro { transition: none; }
+    }
+
+    
+
+</style>
 </head>
 <body>
+
+  <div id="intro">
+    <div class="intro-ring">
+      <img src="logo.png" alt="Angell Boutique">
+      <div class="intro-line"></div>
+    </div>
+  </div>
+
+  
 
   <nav class="navbar">
     <img src="logo.png" alt="Angell Boutique" class="nav-logo">
@@ -1351,7 +1407,12 @@
         }).catch(function(){ /* sin conexión: se queda el HTML estático */ });
       } catch(e){ /* SDK bloqueado: se queda el HTML estático */ }
     })();
-  </script>
+  window.addEventListener('load', function(){
+      setTimeout(function(){ document.getElementById('intro').classList.add('hidden'); }, 1600);
+    });
+</script>
 
 </body>
 </html>
+
+
