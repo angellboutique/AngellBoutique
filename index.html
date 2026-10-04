@@ -1420,7 +1420,7 @@
     (function(){
       var io = new IntersectionObserver(function(entries){
         entries.forEach(function(e){ if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
-      }, { threshold: 0.12 });
+      }, { threshold: 0, rootMargin: '0px 0px 18% 0px' });
       function watch(){
         document.querySelectorAll('.section-inner, .promo-card, .product-card, .bag-card, .contact-card, .hero-text, .hero-image').forEach(function(el){
           if (!el.classList.contains('reveal')) { el.classList.add('reveal'); io.observe(el); }
