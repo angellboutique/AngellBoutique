@@ -218,22 +218,24 @@ document.getElementById('navToggle').addEventListener('click', function(){ docum
 
       // Cada foto guarda también su encuadre: el modal tiene que abrir
       // la foto donde la dejó la dueña, no en el centro por defecto.
-      var fotos = [].map.call(media.querySelectorAll('.pcar-slide img'), function (i) {
+      var leerFoto = function (i) {
         return {
           u: i.getAttribute('src'),
           p: (i.style && i.style.objectPosition) || '50% 50%',
           z: (i.style && i.style.transform) || ''
         };
-      }).filter(function (f) { return !!f.u; });
+      };
+
+      // Las fotos vienen de dos formas: en slides (el carrusel de la
+      // tarjeta) o sueltas una al lado de la otra (la destacada). Si
+      // solo se miran los slides, la ficha de la destacada se quedaba
+      // con una foto de las tres.
+      var fotos = [].map.call(media.querySelectorAll('.pcar-slide img'), leerFoto)
+        .filter(function (f) { return !!f.u; });
+
       if (!fotos.length) {
-        var one = media.querySelector('img');
-        if (one) {
-          fotos = [{
-            u: one.getAttribute('src'),
-            p: (one.style && one.style.objectPosition) || '50% 50%',
-            z: (one.style && one.style.transform) || ''
-          }];
-        }
+        fotos = [].map.call(media.querySelectorAll('img'), leerFoto)
+          .filter(function (f) { return !!f.u; });
       }
 
       var sec = card.closest('section[id]');
